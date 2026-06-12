@@ -1,0 +1,179 @@
+@{
+    ViewData["Title"] = "Sistema de Turnos - Gobernación del César";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .turno-container {
+            max-width: 650px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header-institucional {
+            background: linear-gradient(135deg, #0a2463 0%, #1e3c72 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 4px solid #ffd700;
+        }
+
+        .escudo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .header-institucional h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .welcome-message {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 4px solid #0a2463;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #0a2463;
+        }
+
+        .prioritario-group {
+            background: #fff9e6;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid #ffe4b5;
+        }
+
+        .prioritario-group label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .prioritario-group input {
+            width: 22px;
+            height: 22px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0a2463 0%, #1e3c72 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1e3c72 0%, #0a2463 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="turno-container">
+        <div class="header-institucional">
+            <div class="escudo">🏛️</div>
+            <h1>GOBERNACIÓN DEL CESAR</h1>
+            <p>Sistema Integral de Gestión de Turnos</p>
+        </div>
+
+        <div class="content">
+            <div class="welcome-message">
+                <h3>📋 Bienvenido</h3>
+                <p>Seleccione el trámite que desea realizar.</p>
+            </div>
+
+            <form method="post" action="@Url.Action("TomarTurno", "Turno")">
+                <div class="form-group">
+                    <label for="tipoTramite">Trámite a realizar</label>
+                    <select id="tipoTramite" name="tipoTramite" required>
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="1">📄 Cédula de Ciudadanía</option>
+                        <option value="2">🛂 Pasaporte</option>
+                        <option value="3">📜 Certificado de Tradición</option>
+                        <option value="4">🚗 Impuesto Vehicular</option>
+                        <option value="5">🚘 Licencia de Conducción</option>
+                        <option value="6">📑 Tarjeta de Propiedad</option>
+                    </select>
+                </div>
+
+                <div class="form-group prioritario-group">
+                    <label>
+                        <input type="checkbox" id="esPrioritario" name="esPrioritario" value="true">
+                        <span>👥 Atención Prioritaria (Adulto mayor, discapacidad, embarazadas)</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="identificacion">Número de identificación</label>
+                    <input type="text" id="identificacion" name="identificacion" placeholder="CC 12345678">
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Nombres y apellidos">
+                </div>
+
+                <button type="submit" class="btn-primary">🎫 TOMAR TURNO</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

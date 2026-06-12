@@ -1,0 +1,329 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Acceso Funcionarios - Gobernación del César";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            max-width: 550px;
+            width: 100%;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #0a2463 0%, #1e3c72 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .login-header::before {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: white;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .login-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .login-content {
+            padding: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group span {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #999;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0a2463;
+            box-shadow: 0 0 0 3px rgba(10, 36, 99, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0a2463 0%, #1e3c72 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(10, 36, 99, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            border-left: 4px solid #dc3545;
+        }
+
+        .info-funcionarios {
+            background: #f0f4f8;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 1px solid #e0e8f0;
+        }
+
+        .info-funcionarios h4 {
+            color: #0a2463;
+            margin-bottom: 15px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-card strong {
+            display: block;
+            color: #0a2463;
+            margin-bottom: 5px;
+        }
+
+        .info-card p {
+            font-size: 12px;
+            color: #666;
+            margin: 3px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .badge-operador {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-supervisor {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        @@media (max-width: 550px) {
+            .login-content {
+                padding: 30px;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .login-header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-icon">🏛️</div>
+            <h1>GOBERNACIÓN DEL CESAR</h1>
+            <p>Portal de Acceso para Funcionarios</p>
+            <p>Sistema Integral de Gestión de Turnos</p>
+        </div>
+
+        <div class="login-content">
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="alert-error">
+                    ⚠️ @ViewBag.Error
+                </div>
+            }
+
+            <form method="post">
+                <div class="form-group">
+                    <label>📋 USUARIO</label>
+                    <div class="input-group">
+                        <span>👤</span>
+                        <input type="text" name="usuario" placeholder="Ingrese su nombre de usuario" required autofocus>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🔒 CONTRASEÑA</label>
+                    <div class="input-group">
+                        <span>🔑</span>
+                        <input type="password" name="password" placeholder="Ingrese su contraseña" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    🔐 INICIAR SESIÓN
+                </button>
+            </form>
+
+            <div class="info-funcionarios">
+                <h4>
+                    <span>📋</span> Credenciales de Prueba
+                </h4>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <strong>👩‍💼 Operador 1</strong>
+                        <p>usuario: <code>operador1</code></p>
+                        <p>contraseña: <code>123456</code></p>
+                        <span class="badge badge-operador">Operador</span>
+                    </div>
+                    <div class="info-card">
+                        <strong>👨‍💼 Operador 2</strong>
+                        <p>usuario: <code>operador2</code></p>
+                        <p>contraseña: <code>123456</code></p>
+                        <span class="badge badge-operador">Operador</span>
+                    </div>
+                    <div class="info-card">
+                        <strong>👔 Supervisor</strong>
+                        <p>usuario: <code>supervisor</code></p>
+                        <p>contraseña: <code>123456</code></p>
+                        <span class="badge badge-supervisor">Supervisor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Gobernación del César - Todos los derechos reservados</p>
+            <p>Horario de atención: Lunes a Viernes de 8:00 AM a 4:00 PM</p>
+        </div>
+    </div>
+</body>
+</html>

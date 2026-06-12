@@ -1,0 +1,427 @@
+@{
+    ViewData["Title"] = "Panel de Atención";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Gobernación del César</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0a2463 0%, #1e3c72 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header h1 { font-size: 20px; }
+
+        .ventanilla-info {
+            background: #ffd700;
+            color: #333;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .turno-actual {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .turno-actual h3 { color: #666; margin-bottom: 20px; }
+
+        .turno-number {
+            font-size: 80px;
+            font-weight: bold;
+            color: #0a2463;
+            font-family: monospace;
+            margin: 20px 0;
+        }
+
+        .turno-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .turno-info p { margin: 8px 0; }
+
+        .btn-llamar {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-iniciar {
+            background: #ffc107;
+            color: #333;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-finalizar {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .lista-espera {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .lista-espera h3 {
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .turno-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background 0.2s;
+        }
+
+        .turno-item:hover { background: #f8f9fa; }
+
+        .turno-item.prioritario {
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+        }
+
+        .turno-ticket {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .turno-datos { font-size: 12px; color: #666; margin-top: 5px; }
+
+        .badge-prioritario {
+            background: #ffc107;
+            color: #333;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .btn-llamar-item {
+            background: #0a2463;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .no-turnos { text-align: center; padding: 40px; color: #999; }
+
+        .tabla-turnos {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 25px;
+        }
+
+        .tabla-turnos h3 {
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+
+        th { background: #0a2463; color: white; font-weight: 600; }
+
+        tr:hover { background: #f8f9fa; }
+
+        .badge-espera { background: #ffc107; color: #333; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .badge-llamado { background: #17a2b8; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .badge-atencion { background: #fd7e14; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .badge-atendido { background: #28a745; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+
+        .refresh-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .scroll-table { max-height: 300px; overflow-y: auto; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .modal-ticket {
+            font-size: 70px;
+            font-weight: bold;
+            color: #0a2463;
+            margin: 20px 0;
+        }
+
+        .btn-cerrar {
+            background: #0a2463;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        @@media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🏛️ Panel de Atención</h1>
+            <p>Bienvenido, @Context.Session.GetString("FuncionarioNombre")</p>
+        </div>
+        <div class="ventanilla-info">🪑 Ventanilla @Context.Session.GetInt32("VentanillaId")</div>
+        <button class="logout-btn" onclick="location.href='/Account/Logout'">🚪 Salir</button>
+    </div>
+
+    <div class="main-grid">
+        <div class="turno-actual">
+            <h3>📢 ATENDIENDO ACTUALMENTE</h3>
+            <div id="turnoActualContent">
+                <div class="turno-number" id="turnoActualNumero">---</div>
+                <div class="turno-info">
+                    <p><strong>📋 Trámite:</strong> <span id="turnoActualTramite">---</span></p>
+                    <p><strong>👤 Ciudadano:</strong> <span id="turnoActualCiudadano">---</span></p>
+                    <p><strong>🆔 Identificación:</strong> <span id="turnoActualIdentificacion">---</span></p>
+                </div>
+                <button class="btn-iniciar" id="btnIniciar" style="display:none;" onclick="iniciarAtencion()">▶️ INICIAR ATENCIÓN</button>
+                <button class="btn-finalizar" id="btnFinalizar" style="display:none;" onclick="finalizarAtencion()">✅ FINALIZAR ATENCIÓN</button>
+                <button class="btn-llamar" id="btnLlamar" onclick="llamarSiguiente()">🔔 LLAMAR SIGUIENTE</button>
+            </div>
+        </div>
+
+        <div class="lista-espera">
+            <h3>⏳ TURNOS EN ESPERA <button class="refresh-btn" onclick="cargarTurnos()">🔄</button></h3>
+            <div id="listaEsperaContent"><div class="no-turnos">Cargando turnos...</div></div>
+        </div>
+    </div>
+
+    <div class="tabla-turnos">
+        <h3>📋 TODOS LOS TURNOS DEL DÍA</h3>
+        <div class="scroll-table">
+            <table id="tablaTodosTurnos">
+                <thead>
+                    <tr><th>Ticket</th><th>Ciudadano</th><th>Identificación</th><th>Estado</th><th>Hora</th><th>Inicio</th><th>Fin</th></tr>
+                </thead>
+                <tbody id="listaTodosTurnos"><tr><td colspan="7" style="text-align:center">Cargando...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="modalLlamada" class="modal">
+        <div class="modal-content">
+            <div style="font-size: 60px;">🔔</div>
+            <h2>¡TURNO LLAMADO!</h2>
+            <div class="modal-ticket" id="modalTicket">GDC-000000</div>
+            <p>Diríjase a la ventanilla indicada</p>
+            <button class="btn-cerrar" onclick="cerrarModal()">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        let ventanillaId = @(Context.Session.GetInt32("VentanillaId") ?? 1);
+
+        async function cargarTurnos() {
+            try {
+                const response = await fetch('/Turno/GetTurnosEnEspera');
+                const data = await response.json();
+
+                const listaDiv = document.getElementById('listaEsperaContent');
+                if (data.turnos && data.turnos.length > 0) {
+                    listaDiv.innerHTML = data.turnos.map(turno => `
+                        <div class="turno-item ${turno.prioridad === 1 ? 'prioritario' : ''}">
+                            <div>
+                                <div class="turno-ticket">${turno.numeroTicket}</div>
+                                <div class="turno-datos">👤 ${turno.nombre || 'Anónimo'}<br>🆔 ${turno.identificacion || 'N/A'}</div>
+                                ${turno.prioridad === 1 ? '<div class="badge-prioritario">⭐ Prioritario</div>' : ''}
+                            </div>
+                            <button class="btn-llamar-item" onclick="llamarTurno(${turno.id})">🔔 Llamar</button>
+                        </div>
+                    `).join('');
+                } else {
+                    listaDiv.innerHTML = '<div class="no-turnos">📭 No hay turnos en espera</div>';
+                }
+
+                if (data.turnoActual) {
+                    document.getElementById('turnoActualNumero').innerText = data.turnoActual.numeroTicket;
+                    document.getElementById('turnoActualCiudadano').innerText = data.turnoActual.nombreCiudadano || 'Anónimo';
+                    document.getElementById('turnoActualIdentificacion').innerText = data.turnoActual.identificacion || 'N/A';
+                    
+                    if (data.turnoActual.estado === 'Llamado') {
+                        document.getElementById('btnIniciar').style.display = 'block';
+                        document.getElementById('btnFinalizar').style.display = 'none';
+                        document.getElementById('btnLlamar').style.display = 'none';
+                    } else if (data.turnoActual.estado === 'EnAtencion') {
+                        document.getElementById('btnIniciar').style.display = 'none';
+                        document.getElementById('btnFinalizar').style.display = 'block';
+                        document.getElementById('btnLlamar').style.display = 'none';
+                    }
+                } else {
+                    document.getElementById('turnoActualNumero').innerText = '---';
+                    document.getElementById('turnoActualCiudadano').innerText = '---';
+                    document.getElementById('turnoActualIdentificacion').innerText = '---';
+                    document.getElementById('btnIniciar').style.display = 'none';
+                    document.getElementById('btnFinalizar').style.display = 'none';
+                    document.getElementById('btnLlamar').style.display = 'block';
+                }
+
+                if (data.todosTurnos) {
+                    const tablaBody = document.getElementById('listaTodosTurnos');
+                    tablaBody.innerHTML = data.todosTurnos.map(turno => {
+                        let estadoClass = turno.estado === 'Espera' ? 'badge-espera' : (turno.estado === 'Llamado' ? 'badge-llamado' : (turno.estado === 'EnAtencion' ? 'badge-atencion' : 'badge-atendido'));
+                        return `<tr><td><strong>${turno.numeroTicket}</strong></td><td>${turno.nombre || 'Anónimo'}</td><td>${turno.identificacion || 'N/A'}</td><td><span class="${estadoClass}">${turno.estado}</span></td><td>${turno.horaCreacion}</td><td>${turno.inicioAtencion || '-'}</td><td>${turno.finAtencion || '-'}</td></tr>`;
+                    }).join('');
+                }
+            } catch (error) { console.error('Error:', error); }
+        }
+
+        async function llamarSiguiente() {
+            try {
+                const response = await fetch('/Turno/LlamarSiguiente', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ventanillaId: ventanillaId }) });
+                const result = await response.json();
+                if (result.success) { mostrarModal(result.numeroTicket); cargarTurnos(); } 
+                else { alert(result.mensaje || 'No hay turnos en espera'); }
+            } catch (error) { alert('Error: ' + error.message); }
+        }
+
+        async function llamarTurno(turnoId) {
+            try {
+                const response = await fetch('/Turno/LlamarTurnoEspecifico', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ turnoId: turnoId, ventanillaId: ventanillaId }) });
+                const result = await response.json();
+                if (result.success) { mostrarModal(result.numeroTicket); cargarTurnos(); } 
+                else { alert(result.mensaje || 'Error al llamar el turno'); }
+            } catch (error) { alert('Error: ' + error.message); }
+        }
+
+        async function iniciarAtencion() {
+            try {
+                const response = await fetch('/Turno/IniciarAtencion', { method: 'POST' });
+                const result = await response.json();
+                if (result.success) { cargarTurnos(); } 
+                else { alert('Error al iniciar atención'); }
+            } catch (error) { alert('Error: ' + error.message); }
+        }
+
+        async function finalizarAtencion() {
+            try {
+                const response = await fetch('/Turno/FinalizarAtencion', { method: 'POST' });
+                const result = await response.json();
+                if (result.success) { cargarTurnos(); } 
+                else { alert('Error al finalizar atención'); }
+            } catch (error) { alert('Error: ' + error.message); }
+        }
+
+        function mostrarModal(ticket) {
+            document.getElementById('modalTicket').innerText = ticket;
+            document.getElementById('modalLlamada').style.display = 'flex';
+            setTimeout(() => cerrarModal(), 4000);
+        }
+
+        function cerrarModal() { document.getElementById('modalLlamada').style.display = 'none'; }
+
+        cargarTurnos();
+        setInterval(cargarTurnos, 5000);
+    </script>
+</body>
+</html>

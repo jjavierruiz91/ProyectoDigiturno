@@ -1,0 +1,9 @@
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\GobernacionTurnos.csproj.AssemblyReference.cache
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\GobernacionTurnos.GeneratedMSBuildEditorConfig.editorconfig
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\GobernacionTurnos.AssemblyInfoInputs.cache
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\GobernacionTurnos.AssemblyInfo.cs
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\GobernacionTurnos.csproj.CoreCompileInputs.cache
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\GobernacionTurnos.MvcApplicationPartsAssemblyInfo.cache
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\GobernacionTurnos.RazorAssemblyInfo.cache
+C:\ProyectosVisual\GobernacionTurnos\obj\Debug\net9.0\GobernacionTurnos.RazorAssemblyInfo.cs
