@@ -4017,23 +4017,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Andres\\.nuget\\packages\\": {},
+    "C:\\Users\\Javie\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\ProyectosVisual\\GobernacionTurnos\\GobernacionTurnos.csproj",
+      "projectUniqueName": "E:\\PROYECTOS VISUAL\\ProyectoDigiturno\\GobernacionTurnos.csproj",
       "projectName": "GobernacionTurnos",
-      "projectPath": "C:\\ProyectosVisual\\GobernacionTurnos\\GobernacionTurnos.csproj",
-      "packagesPath": "C:\\Users\\Andres\\.nuget\\packages\\",
-      "outputPath": "C:\\ProyectosVisual\\GobernacionTurnos\\obj\\",
+      "projectPath": "E:\\PROYECTOS VISUAL\\ProyectoDigiturno\\GobernacionTurnos.csproj",
+      "packagesPath": "C:\\Users\\Javie\\.nuget\\packages\\",
+      "outputPath": "E:\\PROYECTOS VISUAL\\ProyectoDigiturno\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Andres\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Javie\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4042,6 +4042,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4102,7 +4103,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.309/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

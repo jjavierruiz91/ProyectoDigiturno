@@ -1,0 +1,385 @@
+@{
+    ViewData["Title"] = "Pantalla de Turnos - Gobernación del César";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a2463 0%, #1e3c72 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .tv-container {
+            width: 95%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .tv-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .tv-header h1 {
+            font-size: 42px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .tv-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .tv-header .fecha {
+            font-size: 16px;
+            margin-top: 8px;
+            color: #ffd700;
+        }
+
+        /* Sección Turno Actual - Horizontal (Ocupa todo el ancho) */
+        .turno-section {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .turno-card {
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            border-radius: 25px;
+            padding: 25px 35px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        @@keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+        }
+
+        .turno-info-left {
+            flex: 2;
+            text-align: left;
+        }
+
+        .turno-info-left h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .turno-number {
+            font-size: 72px;
+            font-weight: bold;
+            font-family: monospace;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 18px;
+            display: inline-block;
+            letter-spacing: 3px;
+            color: #0a2463;
+            margin-top: 10px;
+        }
+
+        .turno-details {
+            margin-top: 15px;
+        }
+
+        .turno-details p {
+            font-size: 18px;
+            margin: 8px 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .turno-details p strong {
+            color: #0a2463;
+            min-width: 110px;
+        }
+
+        .turno-ventanilla {
+            background: #0a2463;
+            color: white;
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .no-turno {
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            width: 100%;
+        }
+
+        /* Sección Turnos en Espera - Horizontal (Tabla ancha) */
+        .espera-section {
+            width: 100%;
+            background: white;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .espera-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .espera-header h2 {
+            font-size: 26px;
+            color: #0a2463;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contador-badge {
+            background: #ffd700;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Tabla Horizontal de Turnos en Espera */
+        .tabla-espera {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .tabla-espera table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabla-espera th {
+            background: #0a2463;
+            color: white;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .tabla-espera td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        .tabla-espera tr:hover {
+            background: #f8f9fa;
+        }
+
+        .tabla-espera .prioritario-row {
+            background: #fff9e6;
+        }
+
+        .badge-prioritario {
+            background: #ffc107;
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .badge-normal {
+            background: #6c757d;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .tv-footer {
+            text-align: center;
+            color: white;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        @@media (max-width: 900px) {
+            .turno-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .turno-info-left {
+                text-align: center;
+            }
+            .turno-number {
+                font-size: 48px;
+            }
+            .tabla-espera th, .tabla-espera td {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tv-container">
+        <div class="tv-header">
+            <h1>🏛️ GOBERNACIÓN DEL CESAR</h1>
+            <p>Sistema de Gestión de Turnos</p>
+            <div class="fecha" id="fechaActual"></div>
+        </div>
+
+        <!-- Turno Actual - Horizontal (Arriba, todo el ancho) -->
+        <div class="turno-section">
+            <div class="turno-card" id="turnoActualContent">
+                <div class="turno-info-left">
+                    <h2>
+                        <span>📢</span> TURNO ACTUAL
+                    </h2>
+                    <div class="turno-number" id="turnoActualTicket">---</div>
+                    <div class="turno-details" id="turnoActualInfo">
+                        <p><strong>👤 Ciudadano:</strong> <span id="turnoActualNombre">---</span></p>
+                        <p><strong>📋 Trámite:</strong> <span id="turnoActualTramite">---</span></p>
+                        <p><strong>🆔 Identificación:</strong> <span id="turnoActualIdentificacion">---</span></p>
+                    </div>
+                </div>
+                <div class="turno-ventanilla" id="turnoActualVentanilla">---</div>
+            </div>
+        </div>
+
+        <!-- Turnos en Espera - Tabla Horizontal (Abajo, todo el ancho) -->
+        <div class="espera-section">
+            <div class="espera-header">
+                <h2>
+                    <span>⏳</span> TURNOS EN ESPERA
+                </h2>
+                <span id="contadorEspera" class="contador-badge">0</span>
+            </div>
+            <div class="tabla-espera">
+                <table id="tablaEspera">
+                    <thead>
+                        <tr>
+                            <th>Ticket</th>
+                            <th>Ciudadano</th>
+                            <th>Identificación</th>
+                            <th>Trámite</th>
+                            <th>Prioridad</th>
+                            <th>Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaEspera">
+                        <tr><td colspan="6" class="loading">Cargando turnos...</td><td style="display:none">florin</td><td style="display:none">florin</td><td style="display:none">florin</td><td style="display:none">florin</td><td style="display:none">florin</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tv-footer">
+            <p>Diríjase a la ventanilla indicada cuando su turno sea llamado | Horario: 8:00 AM - 4:00 PM</p>
+        </div>
+    </div>
+
+    <script>
+        function actualizarPantalla() {
+            fetch('/Turno/GetDatosPantallaTV')
+                .then(response => response.json())
+                .then(data => {
+                    // Turno Actual
+                    if (data.turnoActual && data.turnoActual.numeroTicket && data.turnoActual.numeroTicket !== '---') {
+                        document.getElementById('turnoActualTicket').innerText = data.turnoActual.numeroTicket;
+                        document.getElementById('turnoActualNombre').innerHTML = data.turnoActual.nombre || '---';
+                        document.getElementById('turnoActualTramite').innerHTML = data.turnoActual.tipoTramite || 'Trámite General';
+                        document.getElementById('turnoActualIdentificacion').innerHTML = data.turnoActual.identificacion || 'N/A';
+                        document.getElementById('turnoActualVentanilla').innerHTML = '🪑 Ventanilla ' + (data.turnoActual.ventanilla || '?');
+                    } else {
+                        document.getElementById('turnoActualTicket').innerHTML = '---';
+                        document.getElementById('turnoActualInfo').innerHTML = '<div class="no-turno">⏳ Esperando siguiente turno...</div>';
+                        document.getElementById('turnoActualVentanilla').innerHTML = '---';
+                    }
+
+                    // Tabla de Turnos en Espera
+                    if (data.turnosEspera && data.turnosEspera.length > 0) {
+                        var html = '';
+                        for (var i = 0; i < data.turnosEspera.length; i++) {
+                            var turno = data.turnosEspera[i];
+                            var prioridadClass = turno.prioridad === 1 ? 'prioritario-row' : '';
+                            var prioridadBadge = turno.prioridad === 1 ? '<span class="badge-prioritario">⭐ Prioritario</span>' : '<span class="badge-normal">Normal</span>';
+                            
+                            html += '<tr class="' + prioridadClass + '">' +
+                                '<td><strong>' + turno.numeroTicket + '</strong></td>' +
+                                '<td>👤 ' + (turno.nombre || 'Anónimo') + '</td>' +
+                                '<td>🆔 ' + (turno.identificacion || 'N/A') + '</td>' +
+                                '<td>📋 ' + (turno.tipoTramite || 'Trámite General') + '</td>' +
+                                '<td>' + prioridadBadge + '</td>' +
+                                '<td>🕐 ' + (turno.hora || '-') + '</td>' +
+                                '</tr>';
+                        }
+                        document.getElementById('cuerpoTablaEspera').innerHTML = html;
+                        document.getElementById('contadorEspera').innerText = data.turnosEspera.length;
+                    } else {
+                        document.getElementById('cuerpoTablaEspera').innerHTML = '<tr><td colspan="6" class="loading">📭 No hay turnos en espera</td></tr>';
+                        document.getElementById('contadorEspera').innerText = '0';
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    document.getElementById('cuerpoTablaEspera').innerHTML = '<tr><td colspan="6" class="loading">❌ Error al cargar datos</td></tr>';
+                });
+        }
+
+        function actualizarFecha() {
+            var fecha = new Date();
+            var opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('fechaActual').innerText = fecha.toLocaleDateString('es-ES', opciones).toUpperCase();
+        }
+
+        actualizarFecha();
+        actualizarPantalla();
+        setInterval(actualizarPantalla, 5000);
+    </script>
+</body>
+</html>
